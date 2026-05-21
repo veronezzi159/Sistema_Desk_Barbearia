@@ -9,70 +9,57 @@ namespace SistemaDeAgendamento.Repositories
 {
     public class PessoaRepository
     {
-      
         public int Inserir(Pessoa pessoa)
         {
-            string sql = @"INSERT INTO pessoa (nome, cpf, telefone, email, data_nascimento)
-                           VALUES (@Nome, @Cpf, @Telefone, @Email, @DataNascimento)
-                           RETURNING id;";
-
-            using (IDbConnection conexao =  DbConnection.Create())
-            {
-                return conexao.ExecuteScalar<int>(sql, pessoa);
-            }
+            using (IDbConnection db = DbConnection.Create())
+                return db.ExecuteScalar<int>(@"
+                    INSERT INTO clients (first_name, last_name, cpf, phone)
+                    VALUES (@FirstName, @LastName, @Cpf, @Phone)
+                    RETURNING id", pessoa);
         }
 
         public List<Pessoa> ListarTodos()
         {
-            string sql = @"SELECT id, nome, cpf, telefone, email, data_nascimento AS DataNascimento
-                           FROM pessoa
-                           ORDER BY nome;";
-
-            using (IDbConnection conexao =  DbConnection.Create())
-            {
-                return conexao.Query<Pessoa>(sql).ToList();
-            }
+            using (IDbConnection db = DbConnection.Create())
+                return db.Query<Pessoa>(@"
+                    SELECT id,
+                           first_name AS FirstName,
+                           last_name  AS LastName,
+                           cpf,
+                           phone
+                    FROM   clients
+                    ORDER  BY first_name, last_name").ToList();
         }
 
-       
         public Pessoa BuscarPorId(int id)
         {
-            string sql = @"SELECT id, nome, cpf, telefone, email, data_nascimento AS DataNascimento
-                           FROM pessoa
-                           WHERE id = @Id;";
-
-            using (IDbConnection conexao =  DbConnection.Create())
-            {
-                return conexao.QueryFirstOrDefault<Pessoa>(sql, new { Id = id });
-            }
+            using (IDbConnection db = DbConnection.Create())
+                return db.QueryFirstOrDefault<Pessoa>(@"
+                    SELECT id,
+                           first_name AS FirstName,
+                           last_name  AS LastName,
+                           cpf,
+                           phone
+                    FROM   clients
+                    WHERE  id = @Id", new { Id = id });
         }
 
-       
         public void Editar(Pessoa pessoa)
         {
-            string sql = @"UPDATE pessoa
-                           SET nome = @Nome,
-                               cpf = @Cpf,
-                               telefone = @Telefone,
-                               email = @Email,
-                               data_nascimento = @DataNascimento
-                           WHERE id = @Id;";
-
-            using (IDbConnection conexao =  DbConnection.Create())
-            {
-                conexao.Execute(sql, pessoa);
-            }
+            using (IDbConnection db = DbConnection.Create())
+                db.Execute(@"
+                    UPDATE clients
+                    SET    first_name = @FirstName,
+                           last_name  = @LastName,
+                           cpf        = @Cpf,
+                           phone      = @Phone
+                    WHERE  id = @Id", pessoa);
         }
 
-       
         public void Deletar(int id)
         {
-            string sql = "DELETE FROM pessoa WHERE id = @Id;";
-
-            using (IDbConnection conexao =  DbConnection.Create())
-            {
-                conexao.Execute(sql, new { Id = id });
-            }
+            using (IDbConnection db = DbConnection.Create())
+                db.Execute("DELETE FROM clients WHERE id = @Id", new { Id = id });
         }
     }
 }

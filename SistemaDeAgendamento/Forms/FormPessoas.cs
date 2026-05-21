@@ -13,13 +13,11 @@ namespace SistemaDeAgendamento
         private readonly PessoaRepository _repositorio = new PessoaRepository();
         private int _idSelecionado = 0;
 
-        // Controles da tela
         private ListBox lstPessoas;
         private TextBox txtNome;
+        private TextBox txtSobrenome;
         private TextBox txtCpf;
         private TextBox txtTelefone;
-        private TextBox txtEmail;
-        private DateTimePicker dtpNascimento;
         private Button btnSalvar;
         private Button btnEditar;
         private Button btnExcluir;
@@ -32,36 +30,32 @@ namespace SistemaDeAgendamento
             CarregarPessoas();
         }
 
-        // Cria e posiciona todos os controles na tela.
         private void MontarTela()
         {
-            this.Text = "Cadastro de Pessoas";
+            this.Text = "Cadastro de Clientes";
             this.Width = 640;
-            this.Height = 460;
+            this.Height = 420;
 
-            lstPessoas = new ListBox { Left = 20, Top = 20, Width = 260, Height = 360 };
+            lstPessoas = new ListBox { Left = 20, Top = 20, Width = 260, Height = 320 };
             lstPessoas.SelectedIndexChanged += LstPessoas_SelectedIndexChanged;
 
             int x = 310;
             CriarLabel("Nome:", x, 30);
-            txtNome = new TextBox { Left = x, Top = 48, Width = 280 };
+            txtNome = new TextBox { Left = x, Top = 48, Width = 280, MaxLength = 100 };
 
-            CriarLabel("CPF:", x, 80);
-            txtCpf = new TextBox { Left = x, Top = 98, Width = 280 };
+            CriarLabel("Sobrenome:", x, 80);
+            txtSobrenome = new TextBox { Left = x, Top = 98, Width = 280, MaxLength = 100 };
 
-            CriarLabel("Telefone:", x, 130);
-            txtTelefone = new TextBox { Left = x, Top = 148, Width = 280 };
+            CriarLabel("CPF:", x, 130);
+            txtCpf = new TextBox { Left = x, Top = 148, Width = 280, MaxLength = 11 };
 
-            CriarLabel("E-mail:", x, 180);
-            txtEmail = new TextBox { Left = x, Top = 198, Width = 280 };
+            CriarLabel("Telefone:", x, 180);
+            txtTelefone = new TextBox { Left = x, Top = 198, Width = 280, MaxLength = 20 };
 
-            CriarLabel("Nascimento:", x, 230);
-            dtpNascimento = new DateTimePicker { Left = x, Top = 248, Width = 280, Format = DateTimePickerFormat.Short };
-
-            btnSalvar = new Button { Left = x, Top = 300, Width = 90, Text = "Salvar" };
-            btnEditar = new Button { Left = x + 95, Top = 300, Width = 90, Text = "Editar" };
-            btnExcluir = new Button { Left = x + 190, Top = 300, Width = 90, Text = "Excluir" };
-            btnLimpar = new Button { Left = x, Top = 340, Width = 90, Text = "Limpar" };
+            btnSalvar = new Button { Left = x, Top = 260, Width = 90, Text = "Salvar" };
+            btnEditar = new Button { Left = x + 95, Top = 260, Width = 90, Text = "Editar" };
+            btnExcluir = new Button { Left = x + 190, Top = 260, Width = 90, Text = "Excluir" };
+            btnLimpar = new Button { Left = x, Top = 300, Width = 90, Text = "Limpar" };
 
             btnSalvar.Click += BtnSalvar_Click;
             btnEditar.Click += BtnEditar_Click;
@@ -70,10 +64,9 @@ namespace SistemaDeAgendamento
 
             this.Controls.Add(lstPessoas);
             this.Controls.Add(txtNome);
+            this.Controls.Add(txtSobrenome);
             this.Controls.Add(txtCpf);
             this.Controls.Add(txtTelefone);
-            this.Controls.Add(txtEmail);
-            this.Controls.Add(dtpNascimento);
             this.Controls.Add(btnSalvar);
             this.Controls.Add(btnEditar);
             this.Controls.Add(btnExcluir);
@@ -86,7 +79,6 @@ namespace SistemaDeAgendamento
             this.Controls.Add(label);
         }
 
-        // Lê todas as pessoas do banco e mostra no ListBox.
         private void CarregarPessoas()
         {
             try
@@ -96,26 +88,23 @@ namespace SistemaDeAgendamento
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao carregar pessoas: " + ex.Message,
+                MessageBox.Show("Erro ao carregar clientes: " + ex.Message,
                     "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Ao clicar numa pessoa da lista, preenche os campos.
         private void LstPessoas_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lstPessoas.SelectedItem is Pessoa p)
-            {
-                _idSelecionado = p.Id;
-                txtNome.Text = p.Nome;
-                txtCpf.Text = p.Cpf;
-                txtTelefone.Text = p.Telefone;
-                txtEmail.Text = p.Email;
-                dtpNascimento.Value = p.DataNascimento;
-            }
+            var p = lstPessoas.SelectedItem as Pessoa;
+            if (p == null) return;
+
+            _idSelecionado = p.Id;
+            txtNome.Text = p.FirstName;
+            txtSobrenome.Text = p.LastName;
+            txtCpf.Text = p.Cpf;
+            txtTelefone.Text = p.Phone;
         }
 
-        // Validação dos campos obrigatórios.
         private bool ValidarCampos()
         {
             if (string.IsNullOrWhiteSpace(txtNome.Text))
@@ -123,6 +112,13 @@ namespace SistemaDeAgendamento
                 MessageBox.Show("O nome é obrigatório.", "Atenção",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNome.Focus();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtSobrenome.Text))
+            {
+                MessageBox.Show("O sobrenome é obrigatório.", "Atenção",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSobrenome.Focus();
                 return false;
             }
             if (string.IsNullOrWhiteSpace(txtCpf.Text))
@@ -140,11 +136,10 @@ namespace SistemaDeAgendamento
             return new Pessoa
             {
                 Id = _idSelecionado,
-                Nome = txtNome.Text.Trim(),
+                FirstName = txtNome.Text.Trim(),
+                LastName = txtSobrenome.Text.Trim(),
                 Cpf = txtCpf.Text.Trim(),
-                Telefone = txtTelefone.Text.Trim(),
-                Email = txtEmail.Text.Trim(),
-                DataNascimento = dtpNascimento.Value
+                Phone = txtTelefone.Text.Trim()
             };
         }
 
@@ -154,7 +149,7 @@ namespace SistemaDeAgendamento
             try
             {
                 _repositorio.Inserir(LerCampos());
-                MessageBox.Show("Pessoa cadastrada com sucesso!", "Sucesso",
+                MessageBox.Show("Cliente cadastrado com sucesso!", "Sucesso",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimparCampos();
                 CarregarPessoas();
@@ -170,7 +165,7 @@ namespace SistemaDeAgendamento
         {
             if (_idSelecionado == 0)
             {
-                MessageBox.Show("Selecione uma pessoa na lista para editar.", "Atenção",
+                MessageBox.Show("Selecione um cliente na lista para editar.", "Atenção",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -178,7 +173,7 @@ namespace SistemaDeAgendamento
             try
             {
                 _repositorio.Editar(LerCampos());
-                MessageBox.Show("Dados atualizados!", "Sucesso",
+                MessageBox.Show("Cliente atualizado!", "Sucesso",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimparCampos();
                 CarregarPessoas();
@@ -194,17 +189,17 @@ namespace SistemaDeAgendamento
         {
             if (_idSelecionado == 0)
             {
-                MessageBox.Show("Selecione uma pessoa na lista para excluir.", "Atenção",
+                MessageBox.Show("Selecione um cliente na lista para excluir.", "Atenção",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            var resposta = MessageBox.Show("Deseja realmente excluir esta pessoa?",
+            var resposta = MessageBox.Show("Deseja realmente excluir este cliente?",
                 "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resposta != DialogResult.Yes) return;
             try
             {
                 _repositorio.Deletar(_idSelecionado);
-                MessageBox.Show("Pessoa excluída.", "Sucesso",
+                MessageBox.Show("Cliente excluído.", "Sucesso",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimparCampos();
                 CarregarPessoas();
@@ -220,10 +215,9 @@ namespace SistemaDeAgendamento
         {
             _idSelecionado = 0;
             txtNome.Clear();
+            txtSobrenome.Clear();
             txtCpf.Clear();
             txtTelefone.Clear();
-            txtEmail.Clear();
-            dtpNascimento.Value = DateTime.Now;
             lstPessoas.ClearSelected();
         }
     }
