@@ -142,7 +142,7 @@ namespace SistemaDeAgendamento.Repositories
         {
             string sql = "DELETE FROM especialidade WHERE id = @Id;";
 
-            using (IDbConnection conexao = ConexaoBanco.Create())
+            using (IDbConnection conexao = DbConnection.Create())
             {
                 conexao.Execute(sql, new { Id = especialidadeId });
             }

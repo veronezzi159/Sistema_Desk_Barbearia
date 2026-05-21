@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace SistemaDeAgendamento.Models
 {
-    /
     public class Barbeiro
     {
         

@@ -1,6 +1,6 @@
-﻿namespace SistemaDeAgendamento.Forms
+﻿namespace SistemaDeAgendamento
 {
-    partial class FormPessoas
+    partial class FormPessoa
     {
         /// <summary>
         /// Required designer variable.

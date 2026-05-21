@@ -1,7 +1,7 @@
 ﻿using SistemaDeAgendamento.Models;
 using SistemaDeAgendamento.Repositories;
 
-uusing System;
+using System;
 using System.Windows.Forms;
 using SistemaDeAgendamento.Models;
 using SistemaDeAgendamento.Repositories;

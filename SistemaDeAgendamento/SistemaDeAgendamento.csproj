@@ -108,6 +108,12 @@
     <Compile Include="Forms\FormBarbeiro.Designer.cs">
       <DependentUpon>FormBarbeiro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\formMainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\formMainMenu.Designer.cs">
+      <DependentUpon>formMainMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormPessoas.cs">
       <SubType>Form</SubType>
     </Compile>
