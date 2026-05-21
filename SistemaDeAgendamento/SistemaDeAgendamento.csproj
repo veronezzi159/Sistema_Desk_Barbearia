@@ -124,6 +124,7 @@
     <Compile Include="Database\DbConnection.cs" />
     <!-- Repositories -->
     <Compile Include="Repositories\AppointmentRepository.cs" />
+    <Compile Include="Repositories\ServiceRepository.cs" />
     <Compile Include="Services\Services.cs" />
     <!-- Novo form de agendamento -->
   </ItemGroup>
