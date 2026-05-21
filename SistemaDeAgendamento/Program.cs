@@ -17,7 +17,8 @@ namespace SistemaDeAgendamento
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormAppointment());
+            Application.Run(new FormService());
+            //Application.Run(new FormAppointment());
         }
     }
 }

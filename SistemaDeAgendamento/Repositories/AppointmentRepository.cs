@@ -20,14 +20,6 @@ namespace SistemaDeAgendamento.Repositories
         public override string ToString() => FullName;
     }
 
-    public class ServiceDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public override string ToString() => $"{Name}  —  R$ {Price:F2}";
-    }
-
     public class ScheduleSlot
     {
         public TimeSpan Start { get; set; }
