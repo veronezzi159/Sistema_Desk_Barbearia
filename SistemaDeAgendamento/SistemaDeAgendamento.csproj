@@ -102,12 +102,33 @@
     <Compile Include="Forms\FormAppointment.Designer.cs">
       <DependentUpon>FormAppointment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormBarbeiro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormBarbeiro.Designer.cs">
+      <DependentUpon>FormBarbeiro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\formMainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\formMainMenu.Designer.cs">
+      <DependentUpon>formMainMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormPessoas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormPessoas.Designer.cs">
+      <DependentUpon>FormPessoas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormService.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormService.Designer.cs">
       <DependentUpon>FormService.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\Barbeiro.cs" />
+    <Compile Include="Model\Especialidade.cs" />
+    <Compile Include="Model\Pessoa.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -124,6 +145,8 @@
     <Compile Include="Database\DbConnection.cs" />
     <!-- Repositories -->
     <Compile Include="Repositories\AppointmentRepository.cs" />
+    <Compile Include="Repositories\BarbeiroRepository.cs" />
+    <Compile Include="Repositories\PessoaRepository.cs" />
     <Compile Include="Repositories\ServiceRepository.cs" />
     <Compile Include="Services\Services.cs" />
     <!-- Novo form de agendamento -->
